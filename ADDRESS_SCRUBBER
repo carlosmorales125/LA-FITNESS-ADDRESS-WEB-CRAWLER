@@ -1,0 +1,36 @@
+<?php 
+//include simple html parser @ simplehtmldom.sourceforge.net
+include("simple_html_dom.php");
+//include Database Connection File
+include("database.php");
+
+//declare object
+$html = new simple_html_dom();
+
+//ClubID Counter Variables, the while loop counts from 001 to 999
+$x = 0;
+$y = 0;
+$z = 1;
+while($x < 10){
+	//data collection
+	$html->load_file('https://www.lafitness.com/Pages/ClubHome.aspx?clubid=' . $x . $y . $z);
+	//loading data into variables
+	$name = $html->getElementById('span[id$=ClubDescription]');
+	$address = $html->getElementById('span[id$=ClubAddress]');
+	$city = $html->getElementById('span[id$=ClubCity]');
+	$state = $html->getElementById('span[id$=ClubState]');
+	$zip = $html->getElementById('span[id$=lblZipCode]');
+	$phone = $html->getElementById('span[id$=ClubPhone]');
+	//INSERT SQL STATEMENT GOES BELOW
+	if(isset($name)){	
+		echo $name . "<br>";
+		echo $phone . "<br>";
+		echo $address . "<br>";
+		echo $city . ", " . $state . " " . $zip . "<br><br>";
+		}
+	//INSERT SQL STATEMENT GOES ABOVE
+	$z++;
+	if($z > 9){$y++; $z=0;}
+	if($y > 9){$x++; $y=0;}
+	}
+?>
